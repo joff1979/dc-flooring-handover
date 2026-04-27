@@ -19,19 +19,15 @@ const ROLE_COLORS: Record<Role, string> = {
 };
 
 function AddButton() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <>
-      <button
-        onClick={() => {
-          (window as unknown as { __openAddUser?: () => void }).__openAddUser?.();
-        }}
-        className="bg-[#29B6D5] hover:bg-[#1aa8c4] text-black text-xs font-bold tracking-widest uppercase px-5 py-2.5 transition-colors"
-      >
-        + Add User
-      </button>
-    </>
+    <button
+      onClick={() => {
+        (window as unknown as { __openAddUser?: () => void }).__openAddUser?.();
+      }}
+      className="bg-[#29B6D5] hover:bg-[#1aa8c4] text-black text-xs font-bold tracking-widest uppercase px-5 py-2.5 transition-colors"
+    >
+      + Add User
+    </button>
   );
 }
 
