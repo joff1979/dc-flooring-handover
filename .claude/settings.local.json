@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@14 . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(npx create-next-app@14 . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes --name dc-flooring)",
+      "Read(//c/Users/joff1/code/**)",
+      "Bash(npx create-next-app@14 dc-flooring --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(cp -r C:/Users/joff1/code/dc-flooring/. C:/Users/joff1/code/DCFlooring/)",
+      "Bash(rm -rf C:/Users/joff1/code/dc-flooring)",
+      "Bash(npm install *)",
+      "Bash(npx shadcn@latest init --yes)",
+      "Bash(npx shadcn@latest init -d)",
+      "Bash(npx shadcn@latest add card badge table textarea input label separator progress)",
+      "Bash(npx prisma *)",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)",
+      "Bash(npx tsc *)",
+      "Bash(DATABASE_URL=\"postgresql://user:pass@localhost:5432/db\" DIRECT_URL=\"postgresql://user:pass@localhost:5432/db\" npx prisma generate)",
+      "Bash(npm run *)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('style',''\\), d.get\\('tailwind',{}\\)\\)\")",
+      "Bash(node -e ' *)",
+      "Bash(npx next *)",
+      "Bash(taskkill /F /IM node.exe)",
+      "PowerShell(Stop-Process -Name node -Force -ErrorAction SilentlyContinue)",
+      "WebFetch(domain:www.dcflooring.co.uk)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}

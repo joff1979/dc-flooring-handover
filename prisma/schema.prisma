@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ESTIMATOR
+  CONTRACT_MANAGER
+  ADMIN
+}
+
+enum HandoverStatus {
+  DRAFT
+  AWAITING_ESTIMATOR
+  AWAITING_CM
+  SIGNED_OFF
+  LOCKED
+}
+
+model User {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  name       String
+  role       Role     @default(ESTIMATOR)
+  created_at DateTime @default(now())
+
+  projects_created     Project[]
+  handovers_created    Handover[]        @relation("HandoverCreatedBy")
+  handovers_estimator  Handover[]        @relation("HandoverEstimator")
+  handovers_cm         Handover[]        @relation("HandoverCM")
+  versions_changed     HandoverVersion[]
+}
+
+model Project {
+  id             String   @id @default(uuid())
+  name           String
+  client         String
+  site_address   String?
+  contract_value String?
+  start_date     String?
+  duration       String?
+  created_by     String
+  created_at     DateTime @default(now())
+
+  creator   User       @relation(fields: [created_by], references: [id])
+  handovers Handover[]
+
+  @@index([created_by])
+}
+
+model Handover {
+  id         String         @id @default(uuid())
+  project_id String
+  version    Int            @default(1)
+  status     HandoverStatus @default(DRAFT)
+
+  form_data  Json?
+  ai_summary Json?
+
+  estimator_id        String?
+  estimator_signed_at DateTime?
+  cm_id               String?
+  cm_signed_at        DateTime?
+
+  created_by String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  project   Project           @relation(fields: [project_id], references: [id])
+  creator   User              @relation("HandoverCreatedBy", fields: [created_by], references: [id])
+  estimator User?             @relation("HandoverEstimator", fields: [estimator_id], references: [id])
+  cm        User?             @relation("HandoverCM", fields: [cm_id], references: [id])
+  versions  HandoverVersion[]
+
+  @@index([project_id])
+  @@index([created_by])
+}
+
+model HandoverVersion {
+  id          String   @id @default(uuid())
+  handover_id String
+  version     Int
+  form_data   Json?
+  ai_summary  Json?
+  changed_by  String
+  changed_at  DateTime @default(now())
+  change_note String?
+
+  handover Handover @relation(fields: [handover_id], references: [id])
+  changer  User     @relation(fields: [changed_by], references: [id])
+
+  @@index([handover_id])
+}
