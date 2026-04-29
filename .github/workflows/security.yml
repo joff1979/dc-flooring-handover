@@ -24,6 +24,7 @@ jobs:
           severity: HIGH,CRITICAL
           exit-code: 1
           ignore-unfixed: true
+          trivyignores: .trivyignore
           format: sarif
           output: trivy-results.sarif
 

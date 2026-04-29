@@ -1,0 +1,5 @@
+# postcss < 8.5.10 XSS vulnerability (GHSA-qx2v-qp2m-jg93)
+# Bundled inside Next.js — cannot be updated independently.
+# Next.js has not yet shipped a release with postcss >= 8.5.10.
+# Re-evaluate when Next.js updates its bundled postcss.
+GHSA-qx2v-qp2m-jg93
