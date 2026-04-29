@@ -17,7 +17,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Trivy
+      - name: Run Trivy (table output for debugging)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          severity: HIGH,CRITICAL
+          exit-code: 0
+          ignore-unfixed: true
+          trivyignores: .trivyignore
+          format: table
+
+      - name: Run Trivy (SARIF + gate)
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
