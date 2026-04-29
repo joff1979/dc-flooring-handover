@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, master]
 
+permissions:
+  security-events: write
+  contents: read
+
 jobs:
   trivy:
     name: Trivy vulnerability scan
@@ -14,18 +18,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Trivy
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Trivy (security gate)
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: fs
           severity: HIGH,CRITICAL
           exit-code: 1
           ignore-unfixed: true
+          trivyignores: .trivyignore
+          format: table
+
+      - name: Run Trivy (SARIF for Security tab)
+        uses: aquasecurity/trivy-action@master
+        if: always()
+        with:
+          scan-type: fs
+          severity: HIGH,CRITICAL
+          exit-code: 0
+          ignore-unfixed: true
+          trivyignores: .trivyignore
           format: sarif
           output: trivy-results.sarif
 
       - name: Upload to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: trivy-results.sarif
