@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DictationButton } from "@/components/DictationButton";
+import { JobLookup } from "@/components/JobLookup";
 
 type FormData = {
   projectName: string;
@@ -221,6 +222,19 @@ export default function HandoverForm({ handoverId: initialHandoverId, initialDat
 
         {/* Fields */}
         <div className="space-y-6 bg-[#0f1e35] border border-[#1e3048] p-4 sm:p-6 mb-6">
+          {currentSection.number === 1 && (
+            <JobLookup
+              existingValues={Object.fromEntries(
+                currentSection.fields.map((f) => [f.key, formData[f.key as keyof FormData]])
+              )}
+              onProjectFilled={(fields) => {
+                const updated = { ...formData, ...fields } as FormData;
+                setFormData(updated);
+                if (debounceRef.current) clearTimeout(debounceRef.current);
+                debounceRef.current = setTimeout(() => saveData(updated), 2000);
+              }}
+            />
+          )}
           <DictationButton
             section={currentSection.number as 1 | 2 | 3 | 4}
             existingValues={Object.fromEntries(
